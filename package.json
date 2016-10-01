@@ -1,0 +1,24 @@
+{
+    "name": "Webm-Demuxer-Benchmarks",
+    "version": "1.0.0",
+    "keywords": [
+        "util",
+        "functional",
+        "server",
+        "client",
+        "browser"
+    ],
+    "scripts": {
+    "build": "browserify src/main.js > test/benchmark.js "
+    },
+    "author": "Brian Parra",
+    "contributors": [
+    ],
+    "devDependencies": {
+        "browserify": "^13.0.1",
+        "benchmark" : "^2.1.1",
+        "flare-webm-demuxer" : "^0.0.1",
+        "ogv" : "^1.2.1",
+        "chart.js" : "^2.3.0"
+    }
+}

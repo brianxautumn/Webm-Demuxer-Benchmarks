@@ -38893,12 +38893,20 @@ process.umask = function() { return 0; };
     var timeStamps = [];
     var audioTimeStamps = [];
     var videoTimeStamps = [];
+    var totalAudioTime = 0;
+    var totalVideoTime = 0;
     var videoSizeTime = [];
     var audioSizeTime = [];
     var returnValue = false;
     var initTime;
     var videoDemuxCount = 0;
     var audioDemuxCount = 0;
+    var fileNameUrl;
+
+
+    function getFilename(url){
+        return url.substring(url.lastIndexOf('/')+1);
+    }
 
 
     var getTimestamp;
@@ -38913,6 +38921,7 @@ process.umask = function() { return 0; };
     request.responseType = "arraybuffer";
 
     request.onload = function (event) {
+        fileNameUrl = request.responseURL;
         processLoop(request.response);
         //processLoop2(request.response);
         //var date = Date.now();
@@ -38979,11 +38988,13 @@ process.umask = function() { return 0; };
             audioTimeStamps.push([pointNum, delta]);
             var packetSize = demuxer.audioPackets[demuxer.audioPackets.length -1].data.byteLength;
             audioSizeTime.push([packetSize ,delta]);
+            totalAudioTime += delta;
         } else if (demuxer.videoPackets.length > videoTimeStamps.length) {
             var pointNum = videoTimeStamps.length;
             var packetSize = demuxer.audioPackets[demuxer.audioPackets.length -1].data.byteLength;
             videoTimeStamps.push([pointNum, delta]);
             videoSizeTime.push([packetSize ,delta]);
+            totalVideoTime += delta;
         }else{
             console.warn("no additional ");
         }
@@ -39064,10 +39075,6 @@ process.umask = function() { return 0; };
             var audioOptions = {'title': 'Audio demux cycle times',
                 'width': '100%',
                 'height': chartHeight,
-                'explorer': {
-                    axis: 'horizontal',
-                    keepInBounds: true 
-                },
                 //chartArea: {width: '100%', height: '100%'},
                 crosshair: {focused: {color: '#3bc', opacity: 0.8}}
             };
@@ -39075,10 +39082,7 @@ process.umask = function() { return 0; };
             var videoOptions = {'title': 'Video demux cycle times',
                 'width': '100%',
                 'height': chartHeight,
-                'explorer': {
-                    axis: 'horizontal',
-                    keepInBounds: true 
-                },
+          
                 //chartArea: {width: '100%', height: '100%'},
                 crosshair: {focused: {color: '#3bc', opacity: 0.8}}
             };
@@ -39086,10 +39090,7 @@ process.umask = function() { return 0; };
             var audioSizeOptions = {'title': 'Audio Packet Size Vs Time',
                 'width': '100%',
                 'height': chartHeight,
-                'explorer': {
-                    axis: 'horizontal',
-                    keepInBounds: true
-                },
+     
                 trendlines: {
                     0: {
                         type: 'linear',
@@ -39107,10 +39108,6 @@ process.umask = function() { return 0; };
             var videoSizeOptions = {'title': 'Video Packet Size Vs Time',
                 'width': '100%',
                 'height': chartHeight,
-                'explorer': {
-                    axis: 'horizontal',
-                    keepInBounds: true 
-                },
                 trendlines: {
                     0: {
                         type: 'linear',
@@ -39145,8 +39142,39 @@ process.umask = function() { return 0; };
                 drawChart();
             };
         }
+        var totalVideoPacketCount = demuxer.videoPackets.length;
+        var totalAudioPacketCount = demuxer.audioPackets.length;
+        document.getElementById('mode').innerHTML = "Best Case Senario";
+        
+        
+        var fileDisplay = document.getElementById('file');
+        fileDisplay.innerHTML = getFilename(fileNameUrl);
+        
+        var totalPackets = document.getElementById('total-packets');
+        totalPackets.innerHTML = totalVideoPacketCount +  totalAudioPacketCount;
+        
+        var totalVideoPackets = document.getElementById('total-video-packets');
+        totalVideoPackets.innerHTML = totalVideoPacketCount;
+        
+        var totalAudioPackets = document.getElementById('total-audio-packets');
+        totalAudioPackets.innerHTML = totalAudioPacketCount;
+        
+        var totalAudioTimeDisplay = document.getElementById('total-audio-time');
+        totalAudioTimeDisplay.innerHTML = totalAudioTime.toPrecision(3);
+        
+        var totalVideoTimeDisplay = document.getElementById('total-video-time');
+        totalVideoTimeDisplay.innerHTML = totalVideoTime.toPrecision(3);
+        
+        var averageAudioTime = document.getElementById('average-audio-time');
+        averageAudioTime.innerHTML = (totalAudioTime / totalAudioPacketCount).toPrecision(3);
+        
+        var averageVideoTime = document.getElementById('average-video-time');
+        averageVideoTime.innerHTML = (totalVideoTime / totalAudioPacketCount).toPrecision(3);
+        
+        var initializationTime = document.getElementById('init-time');
+        initializationTime.innerHTML = initTime.toPrecision(3);
+  
     }
-
 
 })();
 

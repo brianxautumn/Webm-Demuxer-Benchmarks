@@ -8,22 +8,87 @@ and open the template in the editor.
     <head>
         <title>TODO supply a title</title>
         <meta charset="UTF-8">
-        
+        <link rel="stylesheet" href="style.css" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
     </head>
     <body>
+
+        <div class="chart">
+            <div class="chart-title">Overview</div>
+            
+            <div class="stat">
+                File : <span id="file"></span>
+            </div>
+            
+            
+            <div class="stat">
+                Mode : <span id="mode"></span>
+            </div>
+            
+            <div class="stat">
+                Total Packets : <span id="total-packets"></span>
+            </div>
+
+            <div class="stat">
+                Total Video Packets : <span id="total-video-packets"></span>
+            </div>
+
+            <div class="stat">
+                Total Audio Packets : <span id="total-audio-packets"></span>
+            </div>
+            
+            <div class="stat">
+                Total Audio Demux Time : <span id="total-audio-time"></span>
+            </div>
+            
+            <div class="stat">
+                Average Audio Demux Time : <span id="average-audio-time"></span>
+            </div>
+            
+            <div class="stat">
+                Total Video Demux Time : <span id="total-video-time"></span>
+            </div>
+            
+            <div class="stat">
+                Average Video Demux Time : <span id="average-video-time"></span>
+            </div>
+
+            <div class="stat">
+                Total Init Time : <span id="init-time"></span>
+            </div>
+        </div>
+
+        <div class="chart">
+            <div class="chart-title">Audio Time</div>
+            <div class="chart-body">
+                <div id="audio_chart_div"></div>
+            </div>
+
+        </div>
+
+        <div class="chart">
+            <div class="chart-title">Video Time</div>
+            <div class="chart-body">
+                <div id="video_chart_div"></div>
+            </div>
+        </div>
+
+        <div class="chart">
+            <div class="chart-title">Audio Vs Bytes</div>
+            <div class="chart-body">
+                <div id="audio_size_chart_div"></div>
+            </div>
+        </div>
+
+        <div class="chart">
+            <div class="chart-title">Video Vs Bytes</div>
+            <div class="chart-body">
+                <div id="video_size_chart_div"></div>
+            </div>
+        </div>
+
         
-        <div id="audio_chart_div"></div>
-        
-        <div id="video_chart_div"></div>
-        
-        <div id="audio_size_chart_div"></div>
-        
-        <div id="video_size_chart_div"></div>
-        
-        <div id="stats"></div>
-        
-        
+
         <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
         <script src="../node_modules/ogv/dist/ogv-demuxer-webm.js"></script>
         <script src="benchmark.js"></script>
